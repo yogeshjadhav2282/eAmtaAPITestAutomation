@@ -10,6 +10,7 @@ import io.cucumber.datatable.DataTable;
 import io.restassured.RestAssured;
 import io.restassured.response.Response;
 import io.restassured.specification.RequestSpecification;
+import org.eclipse.jetty.server.Authentication;
 import org.junit.Assert;
 
 import java.util.HashMap;
@@ -69,12 +70,16 @@ public class SuperAdminStaffStepDefinitions extends ApiRequestBuilder {
         String size = data.get("size").toString();
         String role = data.get("role").toString();
         String roleType = data.get("roleType").toString();
+        String sortBy = data.get("sortBy").toString();
+        String sortDirection = data.get("sortDirection").toString();
 
         Map<String, Object> queryParams = new HashMap<>();
         queryParams.put("page", page);
         queryParams.put("size", size);
-        queryParams.put("role", role);
-        queryParams.put("roleType", roleType);
+//        queryParams.put("role", role);
+//        queryParams.put("roleType", roleType);
+        queryParams.put("sortBy", sortBy);
+        queryParams.put("sortDirection", sortDirection);
 
 
         ApiRequestBuilder.GetAPI(SuperAdminAccessToken, queryParams, endpoint);
@@ -87,7 +92,68 @@ public class SuperAdminStaffStepDefinitions extends ApiRequestBuilder {
     public void iVerifyThatTheAdminStaffIsSeeTheListOfStaffSuccessfullyWithStatusCode(int expectedStatusCode) {
         response.prettyPrint();
         Assert.assertEquals(expectedStatusCode, response.getStatusCode());
-        Assert.assertNotNull("No staff list displayed",response.getBody());
+        Assert.assertNotNull("No staff list displayed", response.getBody());
 
     }
+
+
+    @Given("I set up the request structure to edit the staff details")
+    public void iSetUpTheRequestStructureToEditTheStaffDetails(Map<String, Object> data) {
+        String endpoint = data.get("endpoint").toString();
+        String jsonPath = System.getProperty("user.home") + "/IdeaProjects/eAmataAPITestAutomation/src/test/resources/staffDetails.json";
+
+        ApiRequestBuilder.PutAPI(SuperAdminAccessToken, jsonPath, endpoint);
+        this.response = ApiRequestBuilder.response;
+
+    }
+
+
+    @Then("I verify that the user can edit the staff details successfully with {int} status code")
+    public void iVerifyThatTheUserCanEditTheStaffDetailsSuccessfullyWithStatusCode(int expectedStatusCode) {
+        response.prettyPrint();
+        int actualStatusCode = response.getStatusCode();
+        Assert.assertEquals(expectedStatusCode, actualStatusCode);
+        Assert.assertNotNull(response.jsonPath().get("message"));
+
+    }
+
+    @Given("I set up the request structure to view the staff details")
+    public void iSetUpTheRequestStructureToViewTheStaffDetails(Map<String, Object> data) {
+        String endpoint = data.get("endpoint").toString();
+        String UUID = data.get("uuid").toString();
+
+        ApiRequestBuilder.GetByIdAPI(SuperAdminAccessToken, UUID, endpoint);
+        this.response = ApiRequestBuilder.response;
+
+    }
+
+    @Then("I verify that the user can view the staff details successfully with {int} status code")
+    public void iVerifyThatTheUserCanViewTheStaffDetailsSuccessfullyWithStatusCode(int expectedStatusCode) {
+        response.prettyPrint();
+        int actualStatusCode = response.getStatusCode();
+
+        Assert.assertEquals(expectedStatusCode, actualStatusCode);
+        Assert.assertNotNull(response.getBody());
+
+
+    }
+
+
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

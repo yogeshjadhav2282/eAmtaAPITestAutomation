@@ -1,0 +1,18 @@
+{
+  "uuid": "073f26fa-68bc-4b52-886e-76cf190005c4",
+  "email": "yogesh.jadhav+frontdesk@thinkitive.com",
+  "firstName": "Stuart",
+  "lastName": "willy",
+  "phone": "+11419966772",
+  "gender": "MALE",
+  "roleType": "STAFF",
+  "role": "FRONTDESK",
+  "address": {
+    "line1": "4385 COMMERCE ST",
+    "line2": "",
+    "city": "wegas",
+    "state": "Arizona",
+    "country": "USA",
+    "zipcode": "420012"
+  }
+}

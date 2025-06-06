@@ -78,7 +78,7 @@ public class ApiRequestBuilder {
     public static void setpathParam(String Param){
         Optional.ofNullable(Param).ifPresent(p->{
             pathParam = p;
-        request.pathParams("pathParams",p);
+       // request.pathParam("uuid",p);
     } );
     }
 
@@ -136,6 +136,19 @@ public class ApiRequestBuilder {
     public static void GetAPI(String access_Token, Map<String, Object> queryParams, String endpoint){
         setRequestStructure(access_Token);
         setQueryParams(queryParams);
+        execute(Method.GET, endpoint);
+    }
+
+
+    public static void PutAPI(String access_Token, String jsonPath, String endpoint){
+        setRequestStructure(access_Token);
+        setRequestBodyWithFile(jsonPath);
+        execute(Method.PUT, endpoint);
+    }
+
+    public static void GetByIdAPI(String access_Token, String uuid, String endpoint){
+        setRequestStructure(access_Token);
+        setpathParam(uuid);
         execute(Method.GET, endpoint);
     }
 
