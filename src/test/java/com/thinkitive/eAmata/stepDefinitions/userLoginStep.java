@@ -21,18 +21,17 @@ public class userLoginStep extends ApiRequestBuilder {
     public static void setUpSuite() {
         endPoint = "login";             //propertyHandler.getEndpoint("login");
         System.out.println("Test Suite Started");
-        if(SuperAdminAccessToken == null){
+        if (SuperAdminAccessToken == null) {
 
             loginData = new HashMap<>();
             loginData.put("username", propertyHandler.getProperty("SuperAdminEmail"));
             loginData.put("password", propertyHandler.getProperty("password"));
             // System.out.println("logindata: " + loginData);
-           
+
             ApiRequestBuilder.loginPostRequest(null, loginData, endPoint);
             SuperAdminAccessToken = response.jsonPath().get("data.access_token");
-            System.out.println("Access token is generated successfully : "+ SuperAdminAccessToken);
-        }
-        else{
+            System.out.println("Access token is generated successfully : " + SuperAdminAccessToken);
+        } else {
             System.out.println("Access token may or may not be generated for the Super Admin User :" + SuperAdminAccessToken);
         }
     }
@@ -41,32 +40,33 @@ public class userLoginStep extends ApiRequestBuilder {
     public static void tearDownSuite() {
         System.out.println("Test Suite Completed");
     }
-    
+
 
     @Given("I set up the structure to login User")
     public static String iSetUpTheStructureToLoginUser(Map<String, Object> data) {
         System.out.println("data: " + data.get("endpoint").toString());
-        try {
-            endPoint = data.get("endpoint").toString();
-          username = data.get("username").toString();
-            String Password = data.get("password").toString();
-            // Credentials taken from the config. properties file
-//            loginData = new HashMap<>();
-//            loginData.put("username", propertyHandler.getProperty("SuperAdminEmail"));
-//            loginData.put("password", propertyHandler.getProperty("password"));
 
-            // Credentials taken from the feature file
-            loginData = new HashMap<>();
-            loginData.put("username", username);
-            loginData.put("password", Password);
+        endPoint = data.get("endpoint").toString();
+        username = data.get("username").toString();
+        String Password = data.get("password").toString();
 
+        // Credentials taken from the config. properties file
+        //  loginData = new HashMap<>();
+       //  loginData.put("username", propertyHandler.getProperty("SuperAdminEmail"));
+       //  loginData.put("password", propertyHandler.getProperty("password"));
 
-        } catch (Exception e) {
-            throw new RuntimeException(" Users Credentials not found: " + loginData);
-        }
-            ApiRequestBuilder.loginPostRequest(null, loginData, endPoint);
-        System.out.println("access_Token"+response.jsonPath().get("data.access_token"));
-            SuperAdminAccessToken = response.jsonPath().get("data.access_token");
+        // Credentials taken from the feature file
+        loginData = new HashMap<>();
+         if(username.equals("Null") || Password.equals("Null")){
+            loginData.put("username", "");
+            loginData.put("password", "Test@123");
+        } else {
+             loginData.put("username", username);
+             loginData.put("password", Password);
+         }
+        ApiRequestBuilder.loginPostRequest(null, loginData, endPoint);
+        System.out.println("access_Token" + response.jsonPath().get("data.access_token"));
+        SuperAdminAccessToken = response.jsonPath().get("data.access_token");
 
         return SuperAdminAccessToken;
     }
@@ -84,12 +84,12 @@ public class userLoginStep extends ApiRequestBuilder {
         else if(data.get("scenario").toString().equals("EmailDoesNotExist")){
             System.out.println("Cannot find user with given email "+ username);
             Assert.assertEquals(400, actualstatusCode);
-            Assert.assertEquals("Cannot find user with given email superadminqa12@eamata.com", response.jsonPath().get("message"));
+            Assert.assertEquals("Cannot find user with given email "+username, response.jsonPath().get("message"));
         }
         else if(data.get("scenario").toString().equals("invalidEmail")){
             System.out.println("Cannot find user with given email " + username);
             Assert.assertEquals(400, actualstatusCode);
-            Assert.assertEquals("Cannot find user with given email superadminqaeamata", response.jsonPath().get("message"));
+            Assert.assertEquals("Cannot find user with given email "+username, response.jsonPath().get("message"));
         }
         else if(data.get("scenario").toString().equals("invalidPassword")){
             System.out.println("Invalid credentials. Please check your username and password and try again or please contact administrator.");

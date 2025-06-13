@@ -15,7 +15,5 @@ Feature: Verify login Functionality
       | EmailDoesNotExist | yogesh.jadhav+548465262@thinkitive.com   | Test@123 |
       | invalidEmail      | yogesh.jadhavthinkitive.com              | Test@123 |
       | invalidPassword   | yogesh.jadhav+superadmin2@thinkitive.com | Test123  |
-      | BlankCredentials  |                                          |          |
-
-
+      | BlankCredentials  | Null                                     | Null     |
 
