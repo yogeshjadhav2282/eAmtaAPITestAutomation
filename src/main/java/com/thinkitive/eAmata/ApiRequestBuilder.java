@@ -21,11 +21,15 @@ import java.util.Optional;
 import static io.restassured.RestAssured.given;
 
 public class ApiRequestBuilder {
-    public static RequestSpecification request = given();
+    public static RequestSpecification request;
     public static Response response;
     private static String pathParam;
     public static String SuperAdminAccessToken;
 
+    public static void resetRequest() {
+        request = given();
+        pathParam = null;
+    }
 
     public static void setRequestStructure(String access_token) {
         if(access_token == null){
@@ -37,7 +41,7 @@ public class ApiRequestBuilder {
             request.baseUri(propertyHandler.getProperty("baseUri")).basePath(propertyHandler.getProperty("basePath"))
                     .header("Accept", "application/json")
                     .header("Content-Type", "application/json")
-                    .header("Authorization", "Bearer\n" + access_token)
+                    .header("Authorization", "Bearer " + access_token)
                     .log().all();
         }
 
@@ -121,12 +125,14 @@ public class ApiRequestBuilder {
     }
 
     public static void loginPostRequest(String access_Token, Map<String, Object> map, String endPoint){
+        resetRequest();
         setRequestStructure(access_Token);
         setRequestBody(map);
         execute(Method.POST, endPoint);
     }
 
     public static <T> void PostAPI(String access_Token, T Dazz, String endpoint){
+        resetRequest();
         setRequestStructure(access_Token);
         setRequestBody(Dazz);
         execute(Method.POST, endpoint);
@@ -134,6 +140,7 @@ public class ApiRequestBuilder {
 
 
     public static void GetAPI(String access_Token, Map<String, Object> queryParams, String endpoint){
+        resetRequest();
         setRequestStructure(access_Token);
         setQueryParams(queryParams);
         execute(Method.GET, endpoint);
@@ -141,12 +148,14 @@ public class ApiRequestBuilder {
 
 
     public static void PutAPI(String access_Token, String jsonPath, String endpoint){
+        resetRequest();
         setRequestStructure(access_Token);
         setRequestBodyWithFile(jsonPath);
         execute(Method.PUT, endpoint);
     }
 
     public static void GetByIdAPI(String access_Token, String uuid, String endpoint){
+        resetRequest();
         setRequestStructure(access_Token);
         setpathParam(uuid);
         execute(Method.GET, endpoint);

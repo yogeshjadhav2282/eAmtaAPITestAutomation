@@ -1,17 +1,16 @@
+@SuperAdminStaff
 Feature: Verify Super Admin Staff
 
+  @Regression
   @AddStaffWithValidDetails
   Scenario: Verify that the user is able to Add staff
-    Given I set up the structure to login User
-      | endpoint | login |
     Given I set up the request structure to add the Admin staff
       | endpoint | user |
     Then I verify that the Admin staff is added successfully with 201 status code
 
+  @Regression
   @getTheUsersList
   Scenario: Verify that the user is able to see the staff list
-    Given I set up the structure to login User
-      | endpoint | login |
     Given I set up the request structure to see the staff list
       | endpoint      | user        |
       | page          | 0           |
@@ -24,16 +23,13 @@ Feature: Verify Super Admin Staff
 
   @editStaffWithValidDetails
   Scenario: Verify that the user is able to edit the staff details
-    Given I set up the structure to login User
-      | endpoint | login |
     Given I set up the request structure to edit the staff details
       | endpoint | user |
     Then I verify that the user can edit the staff details successfully with 200 status code
 
+
   @getStaffDetailsByValidUUID
   Scenario: Verify that the user is able to view the staff details
-    Given I set up the structure to login User
-      | endpoint | login |
     Given I set up the request structure to view the staff details
       | endpoint | user                                 |
       | uuid     | 8efcfa26-c80e-40dc-94d6-a70b62b583b1 |

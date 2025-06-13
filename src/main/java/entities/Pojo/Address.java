@@ -1,24 +1,21 @@
 package entities.Pojo;
 
-import com.github.javafaker.Faker;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
-import java.util.HashMap;
-import java.util.Map;
-
-
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
 public class Address {
-    static Faker faker = new Faker();
-    static Map<String, Object> address = new HashMap<>();
-public static Object getAddress(){
-    address.put("line1", faker.address().streetAddress());
-    address.put("line2","Lake Michelleton, PW 27974");
-    address.put("city","Akutan");
-    address.put("state","Newyork");
-    address.put("country","USA");
-    address.put("zipcode","23454");
- return address;
-}
-
+    private String line1 ;
+    private String line2 ;
+    private String city  ;
+    private String state ;
+    private String country ;
+    private String zipcode ;
 
 
 }

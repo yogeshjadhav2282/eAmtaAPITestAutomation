@@ -54,6 +54,7 @@ public class SuperAdminStaffStepDefinitions extends ApiRequestBuilder {
 
     @Then("I verify that the Admin staff is added successfully with {int} status code")
     public void verifyStaffAddition(int expectedStatusCode) {
+        response.prettyPrint();
         int actualStatusCode = response.getStatusCode();
         Assert.assertEquals(expectedStatusCode, actualStatusCode);
 

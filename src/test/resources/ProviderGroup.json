@@ -1,0 +1,24 @@
+{
+  "uuid": "5b7393c6-a929-4885-a0ab-3b4975682bb5",
+  "name": "Shields",
+  "schema": "qa_hce",
+  "subdomain": "hce",
+  "phone": "+11265749122",
+  "npi": "7963485701",
+  "email": "Rashad23@gmail.com",
+  "timezone": null,
+  "address": {
+    "line1": "725 N Central Ave",
+    "line2": "string",
+    "city": "Avondale",
+    "state": "Pennsylvania",
+    "country": "US",
+    "zipcode": "85345"
+  },
+  "active": true,
+  "archive": false,
+  "avatar": null,
+  "ehrId": null,
+  "ehrName": null,
+  "notificationEmail": null
+}
