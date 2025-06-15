@@ -17,7 +17,7 @@ Feature: Verify Location Feature
       | endpoint      | location |
       | tenantId      | NotValue |
       | page          | 0        |
-      | size          | 10       |
+      | size          | 20       |
       | sortBy        | created  |
       | sortDirection | desc     |
     Then I verify that the Location list is displayed successfully with 200 status code

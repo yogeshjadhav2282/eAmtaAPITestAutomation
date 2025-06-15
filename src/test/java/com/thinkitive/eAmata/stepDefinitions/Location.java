@@ -63,12 +63,16 @@ public class Location extends ApiRequestBuilder {
         }
 
         Map<String, Object> queryParams = new HashMap<>();
-        queryParams.put("size", 20);
-        queryParams.put("page", 1);
-        queryParams.put("sortBy", "createdAt");
-        queryParams.put("sortOrder", "desc");
+        queryParams.put("size", data.get("size"));
+        queryParams.put("page", data.get("page"));
+        queryParams.put("sortBy", data.get("sortBy"));
+        queryParams.put("sortDirection", data.get("sortDirection"));
 
-        //request.header("x-tenant-id", TenantId);
+        if(!data.get("tenantId").equals("NotValue")){
+            TenantId = data.get("tenantId");
+        }
+
+       // getTenantId(TenantId);
         ApiRequestBuilder.GetAPI(SuperAdminAccessToken, queryParams, endpoint);
         this.response = ApiRequestBuilder.response;
     }

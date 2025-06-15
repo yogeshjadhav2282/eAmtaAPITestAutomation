@@ -26,6 +26,7 @@ public class ApiRequestBuilder {
     private static String pathParam;
     public static String SuperAdminAccessToken;
     public static String TenantId = propertyHandler.getProperty("tenantId");
+    private static String tenant = null;
 
     public static void resetRequest() {
         request = given();
@@ -39,12 +40,13 @@ public class ApiRequestBuilder {
                     .header("Content-Type", "application/json")
                     .log().all();
         }else {
-            request.baseUri(propertyHandler.getProperty("baseUri")).basePath(propertyHandler.getProperty("basePath"))
-                    .header("Accept", "application/json")
-                    .header("Content-Type", "application/json")
-                    .header("Authorization", "Bearer " + access_token)
-                    .header("x-tenant-id", TenantId)
-                    .log().all();
+                request.baseUri(propertyHandler.getProperty("baseUri")).basePath(propertyHandler.getProperty("basePath"))
+                        .header("Accept", "application/json")
+                        .header("Content-Type", "application/json")
+                        .header("Authorization", "Bearer " + access_token);
+
+          request = Objects.isNull(tenant)?request.log().all():request.header("x-tenant-id", TenantId).log().all();
+
         }
 
     }
@@ -178,6 +180,8 @@ public class ApiRequestBuilder {
         execute(Method.GET, endpoint);
     }
 
-
+ public static void getTenantId(String tenantId){
+     tenant = tenantId;
+ }
 
 }
