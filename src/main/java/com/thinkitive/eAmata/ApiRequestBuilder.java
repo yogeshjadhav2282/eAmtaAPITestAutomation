@@ -25,6 +25,7 @@ public class ApiRequestBuilder {
     public static Response response;
     private static String pathParam;
     public static String SuperAdminAccessToken;
+    public static String TenantId = propertyHandler.getProperty("tenantId");
 
     public static void resetRequest() {
         request = given();
@@ -42,6 +43,7 @@ public class ApiRequestBuilder {
                     .header("Accept", "application/json")
                     .header("Content-Type", "application/json")
                     .header("Authorization", "Bearer " + access_token)
+                    .header("x-tenant-id", TenantId)
                     .log().all();
         }
 
@@ -138,6 +140,13 @@ public class ApiRequestBuilder {
         execute(Method.POST, endpoint);
     }
 
+    public static void PostAPI(String access_Token, Map<String, Object> data, String endpoint){
+        resetRequest();
+        setRequestStructure(access_Token);
+        setRequestBody(data);
+        execute(Method.POST, endpoint);
+    }
+
 
     public static void GetAPI(String access_Token, Map<String, Object> queryParams, String endpoint){
         resetRequest();
@@ -153,6 +162,14 @@ public class ApiRequestBuilder {
         setRequestBodyWithFile(jsonPath);
         execute(Method.PUT, endpoint);
     }
+
+    public static void PutAPI(String access_Token, Map <String, Object> data, String endpoint){
+        resetRequest();
+        setRequestStructure(access_Token);
+        setRequestBody(data);
+        execute(Method.PUT, endpoint);
+    }
+
 
     public static void GetByIdAPI(String access_Token, String uuid, String endpoint){
         resetRequest();
