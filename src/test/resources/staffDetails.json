@@ -1,18 +1,19 @@
 {
-  "uuid": "073f26fa-68bc-4b52-886e-76cf190005c4",
-  "email": "yogesh.jadhav+frontdesk@thinkitive.com",
-  "firstName": "Stuart",
-  "lastName": "willy",
-  "phone": "+11419966772",
+  "uuid": "0b0cc4d5-32e0-46a1-b10e-b9a8e30f4d79",
+  "email": "yogesh.jadhav+superadmin@thinkitive.com",
+  "firstName": "Jack",
+  "lastName": "Harison",
+  "phone": "+15264845458",
   "gender": "MALE",
   "roleType": "STAFF",
-  "role": "FRONTDESK",
+  "role": "SUPER_ADMIN",
   "address": {
-    "line1": "4385 COMMERCE ST",
-    "line2": "",
-    "city": "wegas",
-    "state": "Arizona",
+    "line1": "4750 VALLEY VIEW BLVD",
+    "line2": "Edwardville, street",
+    "city": "Dale",
+    "state": "Alaska",
     "country": "USA",
-    "zipcode": "420012"
-  }
+    "zipcode": "65896"
+  },
+  "active": true
 }

@@ -35,5 +35,5 @@ Feature: Verify Location Feature
     Given I set up the request structure to view the Location details
       | endpoint | location                             |
       | tenantId | NotValue                             |
-      | uuid     | bf57b7b8-016b-42f0-8618-7684846b1d0d |
+      | uuid     | 3bc3c72d-8675-41a5-a3c6-f998c06847ba |
     Then I verify that the Location details displayed successfully with 200 status code
