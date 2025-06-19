@@ -9,6 +9,7 @@ import lombok.*;
 @Builder
 public class staffDetailsPojo {
 
+    private String uuid;
     private String email;
     private String firstName;
     private String lastName;
@@ -19,18 +20,5 @@ public class staffDetailsPojo {
     private String role;
     private Address address;
 
-    @Builder
-    @Getter
-    @Setter
-    @NoArgsConstructor
-    @AllArgsConstructor
-    public static class Address{
-        private String line1;
-        private String line2;
-        private String city;
-        private String state;
-        private String country;
-        private String zipcode;
-    }
 
 }

@@ -4,6 +4,7 @@ import com.github.javafaker.Faker;
 import com.thinkitive.eAmata.ApiRequestBuilder;
 import entities.Pojo.Address;
 import entities.Pojo.staffDetailsPojo;
+import entities.StaffDetailsResponse;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.datatable.DataTable;
@@ -14,28 +15,33 @@ import org.eclipse.jetty.server.Authentication;
 import org.junit.Assert;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
+import java.util.Objects;
+
+import static org.junit.Assert.assertNotNull;
 
 
 public class SuperAdminStaffStepDefinitions extends ApiRequestBuilder {
     private RequestSpecification request;
     private Response response;
     private String endpoint;
+    staffDetailsPojo pojo;
 
     @Given("I set up the request structure to add the Admin staff")
     public void setupRequestStructure(Map<String, Object> data) {
         endpoint = data.get("endpoint").toString();
         Faker faker = new Faker();
         String firstName = faker.name().firstName();
-        staffDetailsPojo.Address address = new staffDetailsPojo.Address();
-        address.setLine1(faker.address().streetAddress());
-        address.setLine2("a1 street");
-        address.setCity("Akutan");
-        address.setState("Arizona");
-        address.setCountry("USA");
-        address.setZipcode("98709");
+        Address address = Address.builder()
+                .line1(faker.address().streetAddress())
+                .line2("a1 street")
+                .state("Arizona")
+                .city("Akutan")
+                .country("USA")
+                .zipcode("65895").build();
 
-        staffDetailsPojo pojo = staffDetailsPojo.builder()
+        pojo = staffDetailsPojo.builder()
                 .firstName(firstName)
                 .lastName(faker.name().lastName())
                 .email(firstName.toLowerCase() + "@yopmail.com")
@@ -59,8 +65,8 @@ public class SuperAdminStaffStepDefinitions extends ApiRequestBuilder {
         Assert.assertEquals(expectedStatusCode, actualStatusCode);
 
         // Additional verifications
-        Assert.assertNotNull("Response should not be null", response);
-        Assert.assertNotNull("Response body should not be null", response.getBody());
+        assertNotNull("Response should not be null", response);
+        assertNotNull("Response body should not be null", response.getBody());
 
     }
 
@@ -91,9 +97,39 @@ public class SuperAdminStaffStepDefinitions extends ApiRequestBuilder {
 
     @Then("I verify that the Admin staff is see the list of staff successfully with {int} status code")
     public void iVerifyThatTheAdminStaffIsSeeTheListOfStaffSuccessfullyWithStatusCode(int expectedStatusCode) {
-        response.prettyPrint();
+        //response.prettyPrint();
         Assert.assertEquals(expectedStatusCode, response.getStatusCode());
-        Assert.assertNotNull("No staff list displayed", response.getBody());
+
+        StaffDetailsResponse staffResponse = response.as(StaffDetailsResponse.class);
+
+        assertNotNull(staffResponse.date);    // Now you have the deserialized object and can access the data
+        assertNotNull(staffResponse.code);
+
+        System.out.println("uuid: " + staffResponse.data.content.get(0).uuid);
+        System.out.println("Number of staff members: " + staffResponse.data.content.size());
+
+        // Example: Accessing details of the first staff member
+        if (!staffResponse.data.content.isEmpty()) {
+            StaffDetailsResponse.StaffMember firstStaff = staffResponse.data.content.get(0);
+
+            pojo = staffDetailsPojo.builder()
+                    .uuid(firstStaff.uuid)
+                    .firstName(firstStaff.firstName).
+                    lastName(firstStaff.lastName)
+                    .email(firstStaff.email)
+                    .gender(firstStaff.gender)
+                    .phone(firstStaff.phone)
+                    .role(firstStaff.role)
+                    .roleType(firstStaff.roleType).address(firstStaff.address).build();
+
+            System.out.println("First Staff Email: " + firstStaff.email);
+            System.out.println("First Staff First Name: " + firstStaff.firstName);
+
+        } else {
+                System.out.println("First Staff details Not available");
+            }
+
+
 
     }
 
@@ -103,7 +139,17 @@ public class SuperAdminStaffStepDefinitions extends ApiRequestBuilder {
         String endpoint = data.get("endpoint").toString();
         String jsonPath = System.getProperty("user.home") + "/IdeaProjects/eAmataAPITestAutomation/src/test/resources/staffDetails.json";
 
-        ApiRequestBuilder.PutAPI(SuperAdminAccessToken, jsonPath, endpoint);
+        System.out.println("First Staff Email: " + pojo.getEmail());
+        System.out.println("First Staff First Name: " + pojo.getFirstName());
+       // ApiRequestBuilder.PutAPI(SuperAdminAccessToken, jsonPath, endpoint);
+//        if (Objects.isNull(pojo)){
+//            System.out.println("updating the user that is provided in the json file");
+//            ApiRequestBuilder.PutAPI(SuperAdminAccessToken, jsonPath, endpoint);
+//        }
+//        else{
+//            System.out.println("updating the staff details that is provided in pojo class");
+            ApiRequestBuilder.PutAPI(SuperAdminAccessToken, pojo, endpoint);
+ //       }
         this.response = ApiRequestBuilder.response;
 
     }
@@ -114,14 +160,15 @@ public class SuperAdminStaffStepDefinitions extends ApiRequestBuilder {
         response.prettyPrint();
         int actualStatusCode = response.getStatusCode();
         Assert.assertEquals(expectedStatusCode, actualStatusCode);
-        Assert.assertNotNull(response.jsonPath().get("message"));
+        assertNotNull(response.jsonPath().get("message"));
 
     }
 
     @Given("I set up the request structure to view the staff details")
     public void iSetUpTheRequestStructureToViewTheStaffDetails(Map<String, Object> data) {
         String endpoint = data.get("endpoint").toString();
-        String UUID = data.get("uuid").toString();
+
+        String UUID = Objects.isNull(pojo.getUuid())? data.get("uuid").toString():pojo.getUuid();
 
         ApiRequestBuilder.GetByIdAPI(SuperAdminAccessToken, UUID, endpoint);
         this.response = ApiRequestBuilder.response;
@@ -134,7 +181,7 @@ public class SuperAdminStaffStepDefinitions extends ApiRequestBuilder {
         int actualStatusCode = response.getStatusCode();
 
         Assert.assertEquals(expectedStatusCode, actualStatusCode);
-        Assert.assertNotNull(response.getBody());
+        assertNotNull(response.getBody());
 
 
     }

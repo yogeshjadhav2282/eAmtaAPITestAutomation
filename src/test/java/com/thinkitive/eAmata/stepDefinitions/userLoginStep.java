@@ -74,7 +74,7 @@ public class userLoginStep extends ApiRequestBuilder {
 
     @Then("I verify that the user is able to login on the super admin portal successfully")
     public void iVerifyThatTheUserIsAbleToLoginOnTheSuperAdminPortalSuccessfully(Map<String, Object> data) {
-        response.prettyPrint();
+       // response.prettyPrint();
         actualstatusCode = response.getStatusCode();
         if(data.get("scenario").toString().equals("ValidCredentials")){
             System.out.println("User logged in successfully with valid credentials");

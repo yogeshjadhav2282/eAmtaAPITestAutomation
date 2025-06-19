@@ -172,6 +172,13 @@ public class ApiRequestBuilder {
         execute(Method.PUT, endpoint);
     }
 
+    public static <T> void PutAPI(String access_Token, T data, String endpoint){
+        resetRequest();
+        setRequestStructure(access_Token);
+        setRequestBody(data);
+        execute(Method.PUT, endpoint);
+    }
+
 
     public static void GetByIdAPI(String access_Token, String uuid, String endpoint){
         resetRequest();
