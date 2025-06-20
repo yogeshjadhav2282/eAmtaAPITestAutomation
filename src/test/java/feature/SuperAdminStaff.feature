@@ -32,5 +32,5 @@ Feature: Verify Super Admin Staff
   Scenario: Verify that the user is able to view the staff details
     Given I set up the request structure to view the staff details
       | endpoint | user                                 |
-      | uuid     | 0b0cc4d5-32e0-46a1-b10e-b9a8e30f4d79 |
+      | uuid     | 00739c9f-f703-47f2-9774-a17368fdc628 |
     Then I verify that the user can view the staff details successfully with 200 status code

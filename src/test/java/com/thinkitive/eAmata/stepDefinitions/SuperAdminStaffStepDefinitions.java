@@ -23,23 +23,32 @@ import static org.junit.Assert.assertNotNull;
 
 
 public class SuperAdminStaffStepDefinitions extends ApiRequestBuilder {
+    Faker faker = new Faker();
     private RequestSpecification request;
     private Response response;
     private String endpoint;
     staffDetailsPojo pojo;
+    static String uuid;
+    static String firstName;
+    static String lastName;
+    static String email;
+    static String phoneNumber;
+    static String gender;
+    static String role;
+    static String roleType;
+    Address address = Address.builder()
+            .line1(faker.address().streetAddress())
+            .line2("a1 street")
+            .state("Arizona")
+            .city("Akutan")
+            .country("USA")
+            .zipcode("65895").build();
+
 
     @Given("I set up the request structure to add the Admin staff")
     public void setupRequestStructure(Map<String, Object> data) {
         endpoint = data.get("endpoint").toString();
-        Faker faker = new Faker();
         String firstName = faker.name().firstName();
-        Address address = Address.builder()
-                .line1(faker.address().streetAddress())
-                .line2("a1 street")
-                .state("Arizona")
-                .city("Akutan")
-                .country("USA")
-                .zipcode("65895").build();
 
         pojo = staffDetailsPojo.builder()
                 .firstName(firstName)
@@ -111,25 +120,22 @@ public class SuperAdminStaffStepDefinitions extends ApiRequestBuilder {
         // Example: Accessing details of the first staff member
         if (!staffResponse.data.content.isEmpty()) {
             StaffDetailsResponse.StaffMember firstStaff = staffResponse.data.content.get(0);
+            uuid = firstStaff.uuid;
+            firstName = firstStaff.firstName;
+            lastName = firstStaff.lastName;
+            email = firstStaff.email;
+            gender = firstStaff.gender;
+            phoneNumber = firstStaff.phone;
+            role = firstStaff.role;
+            roleType = firstStaff.roleType;
 
-            pojo = staffDetailsPojo.builder()
-                    .uuid(firstStaff.uuid)
-                    .firstName(firstStaff.firstName).
-                    lastName(firstStaff.lastName)
-                    .email(firstStaff.email)
-                    .gender(firstStaff.gender)
-                    .phone(firstStaff.phone)
-                    .role(firstStaff.role)
-                    .roleType(firstStaff.roleType).address(firstStaff.address).build();
 
             System.out.println("First Staff Email: " + firstStaff.email);
             System.out.println("First Staff First Name: " + firstStaff.firstName);
 
         } else {
-                System.out.println("First Staff details Not available");
-            }
-
-
+            System.out.println("First Staff details Not available");
+        }
 
     }
 
@@ -139,17 +145,25 @@ public class SuperAdminStaffStepDefinitions extends ApiRequestBuilder {
         String endpoint = data.get("endpoint").toString();
         String jsonPath = System.getProperty("user.home") + "/IdeaProjects/eAmataAPITestAutomation/src/test/resources/staffDetails.json";
 
-        System.out.println("First Staff Email: " + pojo.getEmail());
-        System.out.println("First Staff First Name: " + pojo.getFirstName());
-       // ApiRequestBuilder.PutAPI(SuperAdminAccessToken, jsonPath, endpoint);
-//        if (Objects.isNull(pojo)){
-//            System.out.println("updating the user that is provided in the json file");
-//            ApiRequestBuilder.PutAPI(SuperAdminAccessToken, jsonPath, endpoint);
-//        }
-//        else{
-//            System.out.println("updating the staff details that is provided in pojo class");
+        pojo = staffDetailsPojo.builder()
+                .uuid(uuid)
+                .firstName(firstName)
+                .lastName(lastName)
+                .email(email)
+                .gender(gender)
+                .phone(phoneNumber)
+                .role(role)
+                .roleType(roleType)
+                .address(address)
+                .build();
+
+        if (Objects.isNull(pojo)) {
+            System.out.println("updating the user that is provided in the json file");
+            ApiRequestBuilder.PutAPI(SuperAdminAccessToken, jsonPath, endpoint);
+        } else {
+            System.out.println("updating the staff details that is provided in pojo class");
             ApiRequestBuilder.PutAPI(SuperAdminAccessToken, pojo, endpoint);
- //       }
+        }
         this.response = ApiRequestBuilder.response;
 
     }
@@ -168,7 +182,7 @@ public class SuperAdminStaffStepDefinitions extends ApiRequestBuilder {
     public void iSetUpTheRequestStructureToViewTheStaffDetails(Map<String, Object> data) {
         String endpoint = data.get("endpoint").toString();
 
-        String UUID = Objects.isNull(pojo.getUuid())? data.get("uuid").toString():pojo.getUuid();
+        String UUID = Objects.isNull(uuid) ? data.get("uuid").toString() : uuid;
 
         ApiRequestBuilder.GetByIdAPI(SuperAdminAccessToken, UUID, endpoint);
         this.response = ApiRequestBuilder.response;
