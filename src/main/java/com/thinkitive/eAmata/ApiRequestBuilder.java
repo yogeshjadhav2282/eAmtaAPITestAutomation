@@ -4,6 +4,7 @@ import io.cucumber.java.Before;
 import io.restassured.http.Method;
 import io.restassured.response.Response;
 import io.restassured.specification.RequestSpecification;
+import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
@@ -14,6 +15,7 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
@@ -107,25 +109,14 @@ public class ApiRequestBuilder {
     }
 
     public static JSONObject setRequestBodyWithFile(String filePath){
-        JSONObject jsonObject=null;
-        if(Objects.nonNull(filePath) &&  !filePath.isEmpty()) {
-            JSONParser jsonParser = new JSONParser();
-           // byte[] payload;
-            try {
-                FileReader reader = new FileReader(filePath);
-                Object object = jsonParser.parse(reader);
-                jsonObject =(JSONObject) object;
-             //   payload = Files.readAllBytes(Path.of(filePath));  // access the content from json file and convert into byte array
-                request.body(jsonObject);
-            } catch (FileNotFoundException e) {
-                throw new RuntimeException("file not found ");
-            } catch (IOException e) {
-                throw new RuntimeException("IO exception");
-            } catch (ParseException e) {
-                throw new RuntimeException("parsing exception");
-            }
+        try {
+            String jsonBody = new String(Files.readAllBytes(Paths.get(filePath)));
+            request.body(jsonBody);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
         }
-        return jsonObject;
+
+        return null;
     }
 
     public static void loginPostRequest(String access_Token, Map<String, Object> map, String endPoint){
@@ -148,6 +139,14 @@ public class ApiRequestBuilder {
         setRequestBody(data);
         execute(Method.POST, endpoint);
     }
+    public static void PostAPI(String access_Token, String jsonPath, String uuid, String endpoint){
+        resetRequest();
+        setRequestStructure(access_Token);
+        setpathParam(uuid);
+        setRequestBodyWithFile(jsonPath);
+        execute(Method.POST, endpoint);
+    }
+
 
 
     public static void GetAPI(String access_Token, Map<String, Object> queryParams, String endpoint){

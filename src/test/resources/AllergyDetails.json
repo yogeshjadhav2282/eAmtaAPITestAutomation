@@ -1,0 +1,33 @@
+  {
+    "allergyType": "DRUG",
+    "name": "Rashes",
+    "reaction": "RUNNY_NOSE",
+    "severity": "MILD",
+    "imported": true,
+    "onSetDate": "2025-03-10",
+    "recordedDate": "2025-03-10T06:44:53.274Z",
+    "active": true,
+    "archive": true,
+    "allergyEhrId": "enRyWnSP963FYDpoks4NHOA3",
+    "note": "string"
+  },
+  {
+    "name": "Penicillin",
+    "allergyType": "DRUG",
+    "reaction": "RASHES",
+    "severity": "MILD",
+    "onSetDate": "2018-11-02",
+    "active": false,
+    "allergyEhrId": "",
+    "note": "Reported by patient in childhood"
+  },
+  {
+    "name": "Latex",
+    "allergyType": "ENVIRONMENT",
+    "reaction": "ITCHY_NOSE",
+    "severity": "MODERATE",
+    "onSetDate": "2022-02-10",
+    "active": true,
+    "allergyEhrId": "",
+    "note": "Use latex-free gloves and supplies"
+  }

@@ -1,0 +1,13 @@
+{
+  "patientId": "04254e68-f95d-4c20-a29b-0459eed8220b",
+  "name": "Type 2 Diabetes Mellitus",
+  "medicalCode": "E11.9",
+  "type": "CHRONIC",
+  "startDate": "2025-06-06",
+  "onSetDate": "2025-06-06",
+  "note": "Patient diagnosed with Type 2 Diabetes Mellitus based on elevated fasting glucose (146 mg/dL) and HbA1c (7.5%). Lifestyle counseling and Metformin initiated.",
+  "active": true,
+  "lastOccurrence": "2025-04-11T13:32:46.936Z",
+  "modified": "2025-06-11T13:32:46.936Z",
+  "modifiedBy": "Dr. Jane Smith"
+}
